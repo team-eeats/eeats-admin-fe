@@ -10,6 +10,7 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   align-self: flex-end;
+  cursor: pointer;
 `;
 
 export const BoxWrapper = styled.div`
