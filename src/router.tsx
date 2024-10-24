@@ -4,6 +4,7 @@ import Layout from "./Components/Layout";
 import LoginPage from "./Pages/loginPage";
 import { SuggestPage } from "./Pages/suggestPage";
 import { HideSuggest } from "./Pages/suggestPage/hide";
+import VotePage from "./Pages/votePage";
 
 function router() {
   return (
@@ -14,6 +15,7 @@ function router() {
         <Route element={<Layout />}>
           <Route path="/suggest" element={<SuggestPage />} />
           <Route path="/suggest/hide" element={<HideSuggest />} />
+          <Route path="/vote" element={<VotePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

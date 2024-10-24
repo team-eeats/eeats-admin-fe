@@ -13,7 +13,7 @@ interface TypeOfVoteType {
 
 export const TypeOfVote = styled.div<TypeOfVoteType>`
   width: 50%;
-  height: 100%;
+  height: 58px;
   border-radius: 52px;
   background-color: ${(prop) =>
     prop.select ? `${Color.main300}` : `${Color.white}`};
