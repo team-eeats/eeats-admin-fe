@@ -16,6 +16,7 @@ function router() {
           <Route path="/suggest" element={<SuggestPage />} />
           <Route path="/suggest/hide" element={<HideSuggest />} />
           <Route path="/vote" element={<VotePage />} />
+          <Route path="/vote/makingVote" element={<></>} />
         </Route>
       </Routes>
     </BrowserRouter>
