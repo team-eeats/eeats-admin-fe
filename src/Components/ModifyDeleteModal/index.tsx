@@ -13,7 +13,7 @@ const ModifyDeleteModal = () => {
       {deleteSuggest ? (<DeleteModal />) : (
         <S.Container>
           <S.Modal>
-            <S.TextWrap onClick={() => navigate("/suggestModify")}>
+            <S.TextWrap onClick={() => navigate("/modifyNotice")}>
               <Font kind="Button1" text="수정하기" />
             </S.TextWrap>
             <S.Line />

@@ -12,28 +12,31 @@ const Notice = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
-    <S.Container onClick={() => setSelected(!selected)}>
-      <S.AnnouncementWrap>
-        <S.IconAndTitleWrap>
-          <img src={MessageIcon} alt="메세지" />
-          <S.InfoWrap>
-            <S.TitleWrap>
-              <Font text="오늘 급식 변경" kind="Heading4" />
-              {newMessage ? <img src={NewMark} alt="최신" /> : <></>}
-            </S.TitleWrap>
-            <Font text="1일전" kind="label2" color="gray600" />
-          </S.InfoWrap>
-        </S.IconAndTitleWrap>
-        <img src={Setting} alt="설정" onClick={() => setModalOpen(!modalOpen)} />
-      </S.AnnouncementWrap>
-      {selected ? (
-        <S.Content>
-          <Font text="안녕하세요 블라블라" kind="Body2" />
-        </S.Content>
-      ) : (
-        <></>
-      )}
-    </S.Container>
+    <>
+      <S.Container onClick={() => setSelected(!selected)}>
+        <S.AnnouncementWrap>
+          <S.IconAndTitleWrap>
+            <img src={MessageIcon} alt="메세지" />
+            <S.InfoWrap>
+              <S.TitleWrap>
+                <Font text="오늘 급식 변경" kind="Heading4" />
+                {newMessage ? <img src={NewMark} alt="최신" /> : <></>}
+              </S.TitleWrap>
+              <Font text="1일전" kind="label2" color="gray600" />
+            </S.InfoWrap>
+          </S.IconAndTitleWrap>
+          <img src={Setting} alt="설정" onClick={() => setModalOpen(!modalOpen)} />
+        </S.AnnouncementWrap>
+        {selected ? (
+          <S.Content>
+            <Font text="안녕하세요 블라블라" kind="Body2" />
+          </S.Content>
+        ) : (
+          <></>
+        )}
+      </S.Container>
+      { modalOpen && <ModifyDeleteModal />}
+    </>
   );
 };
 
