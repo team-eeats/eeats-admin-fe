@@ -69,3 +69,27 @@ border: none;
 border-radius: 12px;
 background-color: ${Color.gray0};
 `
+
+export const AddContainer = styled.div`
+width: 720px;
+display: flex;
+flex-direction: column;
+gap: 60px;
+`
+
+export const InputContent = styled.div`
+display: flex;
+flex-direction: column;
+gap: 32px;
+`
+
+export const InputWrap = styled.div`
+display: flex;
+flex-direction: column;
+gap: 12px;
+`
+
+export const TextWrap = styled.div`
+display: flex;
+gap: 4px;
+`
