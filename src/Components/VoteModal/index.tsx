@@ -24,7 +24,12 @@ const VoteModal = () => {
           color="black"
         />
         <S.VoteImgInput htmlFor="fileUpload">
-          <input type="file" id="fileUpload" style={{ display: "none" }} />
+          <input
+            type="file"
+            id="fileUpload"
+            style={{ display: "none" }}
+            accept="image/*"
+          />
           <img src={imgFileImg} alt="" />
           <Font text="사진을 첨부해주세요." kind="caption2" color="gray400" />
         </S.VoteImgInput>
