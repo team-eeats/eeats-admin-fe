@@ -5,6 +5,7 @@ import LoginPage from "./Pages/loginPage";
 import { SuggestPage } from "./Pages/suggestPage";
 import { HideSuggest } from "./Pages/suggestPage/hide";
 import VotePage from "./Pages/votePage";
+import MakingVotePage from "./Pages/makingVotePage";
 
 function router() {
   return (
@@ -16,7 +17,7 @@ function router() {
           <Route path="/suggest" element={<SuggestPage />} />
           <Route path="/suggest/hide" element={<HideSuggest />} />
           <Route path="/vote" element={<VotePage />} />
-          <Route path="/vote/makingVote" element={<></>} />
+          <Route path="/vote/makingVote" element={<MakingVotePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
