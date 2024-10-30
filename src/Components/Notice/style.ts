@@ -10,9 +10,16 @@ gap: 28px;
 border-bottom: 1px solid ${Color.gray0};
 `
 
-export const AnnouncementWrap = styled.div`
+export const IconAndTitleWrap = styled.div`
 display: flex;
 align-items: flex-start;
+gap: 28px;
+`
+
+export const AnnouncementWrap = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
 gap: 28px;
 `
 
