@@ -10,6 +10,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  position: relative;
 `;
 
 export const TextBox = styled.div`
@@ -36,5 +37,14 @@ export const VoteImgInput = styled.label`
   align-items: center;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
+`;
+
+export const XImg = styled.img`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
   cursor: pointer;
 `;
