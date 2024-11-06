@@ -1,9 +1,9 @@
 import { useState } from "react";
 import * as S from "./style";
 import { Font } from "../../Styles/Font";
-import Setting from "../../assets/img/Setting.svg";
-import ModifyDeleteModal from "../ModifyDeleteModal";
 import { Suggestions } from "../../Apis/suggestions/type";
+import { CreateComment } from "../../Apis/comments";
+import { useQueryClient } from "react-query";
 
 /**
  *
@@ -11,43 +11,52 @@ import { Suggestions } from "../../Apis/suggestions/type";
  */
 
 const UserSuggestBox = ({ value }: { value: Suggestions }) => {
+
+  const queryClient = useQueryClient()
+  const id = value.id;
   const [selected, setSelected] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [comment, setComment] = useState(value.comment?.content || "");
+
+  const { mutate: create } = CreateComment(id);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setComment(e.target.value);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    if (e.key === "Enter" && comment.trim()) {
+      create({ content: comment }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("suggestions");
+          setComment("");
+          window.location.reload()
+        }
+      });
+    }
+  };
 
   return (
-    <S.Container key={value.id} onClick={() => setSelected(!selected)} selected={selected}>
+    <S.Container onClick={() => setSelected(!selected)} selected={selected}>
       <S.TopWrap>
         <S.NicknameAndDateWrap>
           <Font text={value.accountId} kind="Body1" color="main200" />
           <Font text={value.createdAt} kind="Body1" color="gray300" />
         </S.NicknameAndDateWrap>
-        <img
-          src={Setting}
-          alt="더보기"
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpenModal(!openModal);
-          }}
-        />
       </S.TopWrap>
 
       <Font text={value.title} kind="Heading3" />
+      <Font text={value.content} kind="Body2" color="gray600" />
 
-      <Font
-        text={value.content}
-        kind="Body2"
-        color="gray600"
-      />
-
-      {selected ? (
+      {selected && (
         <S.Input
+          value={comment}
           placeholder="건의에 답변을 작성하고 Enter키를 눌러주세요."
-          readOnly
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          onClick={(e) => e.stopPropagation()}
         />
-      ) : (
-        <></>
       )}
-      {openModal && <ModifyDeleteModal id={value.id} />}
     </S.Container>
   );
 };

@@ -8,12 +8,9 @@ export type Suggestions = {
   title: string;
   content: string;
   createdAt: string;
-  comment: SuggestComment[];
+  comment: {
+    id: string,
+    content: string
+  }
   accountId: string
-};
-
-export type SuggestComment = {
-  id: string;
-  content: string;
-  createdAt: string;
 };
