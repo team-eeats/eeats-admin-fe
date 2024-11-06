@@ -2,13 +2,13 @@ import axios from "axios";
 import { Cookie } from "../utils/cookie";
 
 export const instance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
   timeout: 3000,
 });
 
 instance.interceptors.request.use(
   (res) => {
-    const token = Cookie.get("access_token");
+    const token = Cookie.get("accessToken");
     if (token) res.headers.Authorization = `Bearer ${token}`;
     return res;
   },

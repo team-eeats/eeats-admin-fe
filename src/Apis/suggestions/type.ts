@@ -1,8 +1,3 @@
-export type CreateSuggestRequest = {
-  title: string;
-  content: string;
-};
-
 export type SuggestListResponse = {
   suggestions: Suggestions[];
 };
@@ -13,11 +8,9 @@ export type Suggestions = {
   title: string;
   content: string;
   createdAt: string;
-  coment: SuggestComment[];
-};
-
-export type SuggestComment = {
-  id: string;
-  content: string;
-  createdAt: string;
+  comment: {
+    id: string,
+    content: string
+  }
+  accountId: string
 };
