@@ -4,13 +4,13 @@ export type ReissueResponse = {
 };
 
 export type SignupRequest = {
-  accountId: string;
+  account_id: string;
   password: string;
   nickname: string;
 };
 
 export type LoginRequest = {
-  accountId: string;
+  account_id: string;
   password: string;
 };
 
