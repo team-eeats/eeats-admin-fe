@@ -5,20 +5,34 @@ import Button from "../../Components/Button";
 import { useEffect, useState } from "react";
 import useInputStore from "../../store/useInputStore";
 import { useNavigate } from "react-router-dom";
+import { Login } from "../../Apis/auth";
 
 const LoginPage = () => {
-  const [buttonActive, setButtonActive] = useState<boolean>(false);
+  const [buttonActive, setButtonActive] = useState(false);
   const { inputs } = useInputStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (inputs["loginText"] && inputs["loginPassword"]) setButtonActive(true);
-    else setButtonActive(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputs["loginText"], inputs["loginPassword"]]);
+    setButtonActive(!!inputs["loginText"] && !!inputs["loginPassword"]);
+  }, [inputs]);
 
-  const clickHandle = () => {
-    navigate("/main");
+  const clickHandle = async () => {
+    try {
+      const response = await Login({
+        account_id: inputs["loginText"],
+        password: inputs["loginPassword"],
+      });
+      if (response && response.data) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+        navigate("/Notice");
+      } else {
+        console.log("fucking error", response);
+      }
+    } catch (error) {
+      console.log(error);
+      // alert("로그인에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
