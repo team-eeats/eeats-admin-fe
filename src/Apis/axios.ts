@@ -9,7 +9,7 @@ export const instance = axios.create({
 instance.interceptors.request.use(
   (res) => {
     // const token = Cookie.get("accessToken");
-    const token = import.meta.env.VITE_APP_TOKEN
+    const token = import.meta.env.VITE_APP_ADMIN_TOKEN
     if (token) res.headers.Authorization = `Bearer ${token}`;
     return res;
   },
