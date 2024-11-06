@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Font } from "../../Styles/Font";
 import * as S from "./style";
 import DeleteModal from "../DeleteModal";
+import { useNavigate } from "react-router-dom";
 
 const ModifyDeleteModal = () => {
+  const navigate = useNavigate()
   const [deleteSuggest, setDeleteSuggest] = useState<boolean>(false);
 
   return (
