@@ -1,12 +1,38 @@
 import { Font } from "../../Styles/Font"
 import * as S from "./style"
 import Button from "../../Components/Button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Input from "../../Components/Input/Input"
+import { useNavigate } from "react-router-dom"
+import useInputStore from "../../store/useInputStore"
+import { ModifyNotice } from "../../Apis/notices/index"
 
 const AddNotice = () => {
-
+  const navigate = useNavigate()
+  const { inputs } = useInputStore()
+  const [content, setContent] = useState<string>('')
   const [active, setActive] = useState<boolean>(false)
+
+  const noticeId = ''
+
+  const { mutate: modifyNotice } = ModifyNotice(noticeId);
+
+  useEffect(() => {
+    setActive(!!inputs["title"] && !!content);
+  }, [inputs, content]);
+
+  const handleUpload = () => {
+    try {
+      const noticeData = {
+        title: inputs["title"],
+        content,
+      };
+      modifyNotice(noticeData);
+      navigate("/notice")
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <S.Container>
@@ -16,7 +42,7 @@ const AddNotice = () => {
           <Button
             text="수정 완료"
             activate={active}
-            onClick={() => { }}
+            onClick={handleUpload}
           />
         </S.TitleWrap>
         <S.InputContent>
@@ -34,7 +60,10 @@ const AddNotice = () => {
             <S.TextWrap>
               <Font text="공지 내용" kind="label1" />
             </S.TextWrap>
-            <S.TextArea placeholder="공지 내용을 입력해주세요." />
+            <S.TextArea
+              placeholder="공지 내용을 입력해주세요."
+              onChange={(e) => setContent(e.target.value)}
+            />
           </S.InputWrap>
         </S.InputContent>
       </S.AddContainer>
