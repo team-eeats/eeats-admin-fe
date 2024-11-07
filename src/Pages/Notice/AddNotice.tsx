@@ -1,12 +1,35 @@
 import { Font } from "../../Styles/Font"
 import * as S from "./style"
 import Button from "../../Components/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Input from "../../Components/Input/Input"
+import useInputStore from "../../store/useInputStore"
+import { CreateNotice } from "../../Apis/notices"
+import { useNavigate } from "react-router-dom"
 
 const AddNotice = () => {
-
+  const navigate = useNavigate()
+  const { inputs } = useInputStore()
+  const [content, setContent] = useState<string>('')
   const [active, setActive] = useState<boolean>(false)
+
+  const handleUpload = async () => {
+    try {
+      const noticeData = {
+        title: inputs["title"],
+        content,
+      };
+      await CreateNotice(noticeData);
+      navigate("/notice")
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    setActive(!!inputs["title"] && !!content)
+  }, [inputs, content]);
+
 
   return (
     <S.Container>
@@ -16,7 +39,7 @@ const AddNotice = () => {
           <Button
             text="공지 업로드"
             activate={active}
-            onClick={() => { }}
+            onClick={handleUpload}
           />
         </S.TitleWrap>
         <S.InputContent>
@@ -35,7 +58,11 @@ const AddNotice = () => {
             <S.TextWrap>
               <Font text="공지 내용" kind="label1" />
             </S.TextWrap>
-            <S.TextArea placeholder="공지 내용을 입력해주세요." />
+            <S.TextArea
+              value={content}
+              placeholder="공지 내용을 입력해주세요."
+              onChange={(e) => setContent(e.target.value)}
+            />
           </S.InputWrap>
         </S.InputContent>
       </S.AddContainer>
