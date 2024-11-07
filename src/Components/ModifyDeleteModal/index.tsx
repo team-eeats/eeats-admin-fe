@@ -4,14 +4,14 @@ import * as S from "./style";
 import DeleteModal from "../DeleteModal";
 import { useNavigate } from "react-router-dom";
 
-const ModifyDeleteModal = () => {
+const ModifyDeleteModal = ({id}: {id: string}) => {
   const navigate = useNavigate()
   const [deleteSuggest, setDeleteSuggest] = useState<boolean>(false);
 
   return (
     <>
       {deleteSuggest ? (
-        <DeleteModal />
+        <DeleteModal id={id} />
       ) : (
         <S.Container>
           <S.Modal>

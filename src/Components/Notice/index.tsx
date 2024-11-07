@@ -56,7 +56,7 @@ const Notice = ({ value }: { value: Notices }) => {
           <></>
         )}
       </S.Container>
-      {modalOpen && <ModifyDeleteModal />}
+      {modalOpen && <ModifyDeleteModal id={id}/>}
     </>
   );
 };
