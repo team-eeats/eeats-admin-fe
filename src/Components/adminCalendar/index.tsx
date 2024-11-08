@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import * as S from './style';
 import { Font } from '../../Styles/Font';
 import { ArrowRight } from "../../assets/img/SVG/ArrowRight";
@@ -6,10 +6,14 @@ import { ArrowLeft } from "../../assets/img/SVG/ArrowLeft";
 
 const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
-const AdeminCalendar = () => {
+const AdminCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const inputRef = useRef<HTMLDivElement | null>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -58,8 +62,34 @@ const AdeminCalendar = () => {
   };
 
   const handleInputClick = () => {
+    if (inputRef.current) {
+      const { bottom, left } = inputRef.current.getBoundingClientRect();
+      setCalendarPosition({
+        top: bottom + 10,  // 원하는 만큼 여백 추가
+        left: left + 5,    // 원하는 만큼 여백 추가
+      });
+    }
     setIsCalendarOpen(!isCalendarOpen);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const { startDay, endDay } = getStartAndEndDays();
   const weeks = groupDatesByWeek(startDay, endDay);
@@ -68,7 +98,7 @@ const AdeminCalendar = () => {
 
   return (
     <S.Container>
-      <S.InputWrapper>
+      <S.InputWrapper ref={inputRef}>
         <input 
           type="text" 
           value={formatDate(selectedDate)} 
@@ -79,7 +109,7 @@ const AdeminCalendar = () => {
       </S.InputWrapper>
       
       {isCalendarOpen && (
-        <S.CalendarWrap>
+        <S.CalendarWrap ref={calendarRef} style={{ top: `${calendarPosition.top}px`, left: `${calendarPosition.left}px` }}>
           <S.CalendarShiftWrap>
             <div onClick={() => handleMonthChange('prev')}>
               <ArrowLeft />
@@ -122,4 +152,4 @@ const AdeminCalendar = () => {
   );
 };
 
-export default AdeminCalendar;
+export default AdminCalendar;

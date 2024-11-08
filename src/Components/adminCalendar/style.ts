@@ -6,6 +6,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin: 300px;
 `;
 
 export const InputWrapper = styled.div`
@@ -14,7 +15,6 @@ export const InputWrapper = styled.div`
 
   input {
     font-family: "Pretendard";
-
     width: 100%;
     height: 59px;
     padding-left: 24px;
@@ -23,14 +23,16 @@ export const InputWrapper = styled.div`
     background-color: ${Color.gray0};
     border-radius: 12px;
     cursor: pointer;
+    outline: none;
+
+    &:focus {
+      border: 1px solid ${Color.main300}
+    }
   }
 `;
 
 export const CalendarWrap = styled.div`
-  position: absolute;
-  top: 10%;
-  left: 29%;
-  transform: translateX(-50%);
+  position: fixed;
   width: 100%;
   max-width: 340px;
   padding: 20px;
@@ -39,6 +41,7 @@ export const CalendarWrap = styled.div`
   border-radius: 8px;
   z-index: 10;
 `;
+
 
 export const CalendarShiftWrap = styled.div`
   display: flex;
