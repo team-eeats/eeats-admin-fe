@@ -1,10 +1,43 @@
 import styled from "styled-components";
+import { Color } from "../../Styles/Color";
 
 export const Container = styled.div`
   width: 384px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+`;
+
+export const InputWrapper = styled.div`
+  width: 100%;
+  max-width: 340px;
+
+  input {
+    font-family: "Pretendard";
+
+    width: 100%;
+    height: 59px;
+    padding-left: 24px;
+    font-size: 16px;
+    border: none;
+    background-color: ${Color.gray0};
+    border-radius: 12px;
+    cursor: pointer;
+  }
+`;
+
+export const CalendarWrap = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 29%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 340px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 10;
 `;
 
 export const CalendarShiftWrap = styled.div`

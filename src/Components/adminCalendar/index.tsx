@@ -6,9 +6,10 @@ import { ArrowLeft } from "../../assets/img/SVG/ArrowLeft";
 
 const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
-const Calendar = () => {
+const AdeminCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -51,47 +52,74 @@ const Calendar = () => {
   const isCurrentMonth = (date: Date) => date.getMonth() === currentDate.getMonth();
   const isSelectedDate = (date: Date) => selectedDate?.toDateString() === date.toDateString();
 
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
+    setIsCalendarOpen(false);
+  };
+
+  const handleInputClick = () => {
+    setIsCalendarOpen(!isCalendarOpen);
+  };
+
   const { startDay, endDay } = getStartAndEndDays();
   const weeks = groupDatesByWeek(startDay, endDay);
 
+  const formatDate = (date: Date | null) => date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : "";
+
   return (
     <S.Container>
-      <S.CalendarShiftWrap>
-        <div onClick={() => handleMonthChange('prev')}>
-          <ArrowLeft />
-        </div>
-        <Font kind="Heading3" text={`${year}년 ${month + 1}월`} />
-        <div onClick={() => handleMonthChange('next')}>
-          <ArrowRight />
-        </div>
-      </S.CalendarShiftWrap>
-      <S.DayWrap>
-        {daysOfWeek.map((day, index) => (
-          <S.Day key={index}>
-            <Font kind="Heading4" text={day} />
-          </S.Day>
-        ))}
-      </S.DayWrap>
-      <S.Month>
-        {weeks.map((week, weekIndex) => (
-          <S.Week key={weekIndex}>
-            {week.map((date, dateIndex) => (
-              <S.Date
-                key={dateIndex}
-                onClick={() => setSelectedDate(date)}
-                isToday={isToday(date)}
-                isPast={isPastDate(date)}
-                isCurrentMonth={isCurrentMonth(date)}
-                isSelected={isSelectedDate(date)}
-              >
-                {date.getDate().toString()}
-              </S.Date>
+      <S.InputWrapper>
+        <input 
+          type="text" 
+          value={formatDate(selectedDate)} 
+          onClick={handleInputClick} 
+          readOnly 
+          placeholder="투표 시작 기간을 설정해주세요" 
+        />
+      </S.InputWrapper>
+      
+      {isCalendarOpen && (
+        <S.CalendarWrap>
+          <S.CalendarShiftWrap>
+            <div onClick={() => handleMonthChange('prev')}>
+              <ArrowLeft />
+            </div>
+            <Font kind="Heading3" text={`${year}년 ${month + 1}월`} />
+            <div onClick={() => handleMonthChange('next')}>
+              <ArrowRight />
+            </div>
+          </S.CalendarShiftWrap>
+          
+          <S.DayWrap>
+            {daysOfWeek.map((day, index) => (
+              <S.Day key={index}>
+                <Font kind="Heading4" text={day} />
+              </S.Day>
             ))}
-          </S.Week>
-        ))}
-      </S.Month>
+          </S.DayWrap>
+          
+          <S.Month>
+            {weeks.map((week, weekIndex) => (
+              <S.Week key={weekIndex}>
+                {week.map((date, dateIndex) => (
+                  <S.Date
+                    key={dateIndex}
+                    onClick={() => handleDateClick(date)}
+                    isToday={isToday(date)}
+                    isPast={isPastDate(date)}
+                    isCurrentMonth={isCurrentMonth(date)}
+                    isSelected={isSelectedDate(date)}
+                  >
+                    {date.getDate().toString()}
+                  </S.Date>
+                ))}
+              </S.Week>
+            ))}
+          </S.Month>
+        </S.CalendarWrap>
+      )}
     </S.Container>
   );
 };
 
-export default Calendar;
+export default AdeminCalendar;
