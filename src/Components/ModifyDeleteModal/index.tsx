@@ -15,7 +15,7 @@ const ModifyDeleteModal = ({id}: {id: string}) => {
       ) : (
         <S.Container>
           <S.Modal>
-            <S.TextWrap onClick={() => navigate("/modifyNotice")}>
+            <S.TextWrap onClick={() => navigate("/modifyNotice", { state: { noticeId: id } })}>
               <Font kind="Button1" text="수정하기" />
             </S.TextWrap>
             <S.Line />

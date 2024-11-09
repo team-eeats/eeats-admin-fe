@@ -1,37 +1,54 @@
-import { Font } from "../../Styles/Font"
-import * as S from "./style"
-import Button from "../../Components/Button"
-import { useState, useEffect } from "react"
-import Input from "../../Components/Input/Input"
-import { useNavigate } from "react-router-dom"
-import useInputStore from "../../store/useInputStore"
-import { ModifyNotice } from "../../Apis/notices/index"
+import { Font } from "../../Styles/Font";
+import * as S from "./style";
+import Button from "../../Components/Button";
+import { useState, useEffect } from "react";
+import Input from "../../Components/Input/Input";
+import { useLocation, useNavigate } from "react-router-dom";
+import useInputStore from "../../store/useInputStore";
+import { ModifyNotice, NoticeDetail } from "../../Apis/notices/index";
 
 const AddNotice = () => {
-  const navigate = useNavigate()
-  const { inputs } = useInputStore()
-  const [content, setContent] = useState<string>('')
-  const [active, setActive] = useState<boolean>(false)
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { inputs, setInput } = useInputStore();
 
-  const noticeId = ''
+  const [content, setContent] = useState<string>('');
+  const [active, setActive] = useState<boolean>(false);
+
+  const noticeId = state?.noticeId || '';
 
   const { mutate: modifyNotice } = ModifyNotice(noticeId);
+
+  useEffect(() => {
+    const handleDetail = async () => {
+      try {
+        const response = await NoticeDetail(noticeId);
+        setInput("title", response.data.title);
+        setContent(response.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (noticeId) handleDetail();
+  }, [noticeId, setInput]);
 
   useEffect(() => {
     setActive(!!inputs["title"] && !!content);
   }, [inputs, content]);
 
   const handleUpload = () => {
-    try {
-      const noticeData = {
-        title: inputs["title"],
-        content,
-      };
-      modifyNotice(noticeData);
-      navigate("/notice")
-    } catch (error) {
-      console.error(error);
-    }
+    const noticeData = {
+      title: inputs["title"],
+      content,
+    };
+    modifyNotice(noticeData, {
+      onSuccess: () => {
+        navigate("/notice");
+      },
+      onError: (error) => {
+        console.error(error);
+      }
+    });
   };
 
   return (
@@ -62,13 +79,14 @@ const AddNotice = () => {
             </S.TextWrap>
             <S.TextArea
               placeholder="공지 내용을 입력해주세요."
+              value={content}
               onChange={(e) => setContent(e.target.value)}
             />
           </S.InputWrap>
         </S.InputContent>
       </S.AddContainer>
     </S.Container>
-  )
-}
+  );
+};
 
-export default AddNotice
+export default AddNotice;
