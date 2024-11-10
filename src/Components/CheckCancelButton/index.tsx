@@ -12,8 +12,8 @@ const CheckCancelButton = ({ id, close }: ButtonProps) => {
   const handleDelete = async () => {
     try {
       await DeleteNotice(id);
-      console.log("삭제가 완료되었습니다");
       close();
+      location.reload();
     } catch (error) {
       console.log(error);
     }
