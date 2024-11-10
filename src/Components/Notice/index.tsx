@@ -8,29 +8,30 @@ import ModifyDeleteModal from "../ModifyDeleteModal";
 import { NoticeDetailResponse, Notices } from "../../Apis/notices/type";
 import { passOneDay, timeForToday } from "../../utils/time";
 import { NoticeDetail } from "../../Apis/notices";
+import useModal from "../../Hooks/useModal"
 
 const Notice = ({ value }: { value: Notices }) => {
-  const id = value.id
+  const id = value.id;
   const [selected, setSelected] = useState(false);
   const [newMessage, setNewMessage] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false)
+  const [detail, setDetail] = useState<NoticeDetailResponse | null>(null);
 
-  const [detail, setDetail] = useState<NoticeDetailResponse | null>(null)
+  const { Modal, open, close, isOpen } = useModal({ useBlur: true });
 
   useEffect(() => {
     const handleDetail = async () => {
       try {
-        const response = await NoticeDetail(id)
-        setDetail(response.data)
-        setNewMessage(!passOneDay(detail?.createdAt || ''))
+        const response = await NoticeDetail(id);
+        setDetail(response.data);
+        const isNew = passOneDay(response.data.createdAt);
+        setNewMessage(!isNew);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
-    handleDetail()
-  }, [])
-
+    handleDetail();
+  }, [id]);
 
   return (
     <>
@@ -41,22 +42,25 @@ const Notice = ({ value }: { value: Notices }) => {
             <S.InfoWrap>
               <S.TitleWrap>
                 <Font text={detail?.title} kind="Heading4" />
-                {newMessage ? <img src={NewMark} alt="최신" /> : <></>}
+                {newMessage && <img src={NewMark} alt="최신" />}
               </S.TitleWrap>
               <Font text={timeForToday(detail?.createdAt || '')} kind="label2" color="gray600" />
             </S.InfoWrap>
           </S.IconAndTitleWrap>
-          <img src={Setting} alt="설정" onClick={() => setModalOpen(!modalOpen)} />
+          <img src={Setting} alt="설정" onClick={open} />
         </S.AnnouncementWrap>
-        {selected ? (
+        {selected && (
           <S.Content>
             <Font text={detail?.content} kind="Body2" />
           </S.Content>
-        ) : (
-          <></>
         )}
       </S.Container>
-      {modalOpen && <ModifyDeleteModal id={id}/>}
+      
+      {isOpen && (
+        <Modal>
+          <ModifyDeleteModal id={id} close={close} />
+        </Modal>
+      )}
     </>
   );
 };
