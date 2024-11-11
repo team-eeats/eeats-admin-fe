@@ -3,16 +3,17 @@ import * as S from "./style";
 import { Font } from "../../Styles/Font";
 import { ArrowRight } from "../../assets/img/SVG/ArrowRight";
 import { ArrowLeft } from "../../assets/img/SVG/ArrowLeft";
+import { useDateStore } from "../../store/calendar";
 
 const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
 
 const AdminCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
+  const { startDate, endDate, setStartDate, setEndDate } = useDateStore();
   const inputRef = useRef<HTMLDivElement | null>(null);
-  const calendarRef = useRef<HTMLDivElement | null>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);  
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -63,10 +64,16 @@ const AdminCalendar = () => {
   const isCurrentMonth = (date: Date) =>
     date.getMonth() === currentDate.getMonth();
   const isSelectedDate = (date: Date) =>
-    selectedDate?.toDateString() === date.toDateString();
+    startDate?.toDateString() === date.toDateString() ||
+    endDate?.toDateString() === date.toDateString();
 
   const handleDateClick = (date: Date) => {
-    setSelectedDate(date);
+    if (!startDate || (startDate && endDate)) {
+      setStartDate(date);
+      setEndDate(null);
+    } else {
+      setEndDate(date);
+    }
     setIsCalendarOpen(false);
   };
 
@@ -96,7 +103,6 @@ const AdminCalendar = () => {
   const { startDay, endDay } = getStartAndEndDays();
   const weeks = groupDatesByWeek(startDay, endDay);
 
-  // 날짜를 "MM월 DD일" 형식으로 포맷
   const formatDate = (date: Date | null) =>
     date ? `${date.getMonth() + 1}월 ${date.getDate()}일` : "";
 
@@ -105,10 +111,17 @@ const AdminCalendar = () => {
       <S.InputWrapper ref={inputRef}>
         <input
           type="text"
-          value={formatDate(selectedDate)}
+          value={`${formatDate(startDate)}`}
           onClick={handleInputClick}
           readOnly
           placeholder="투표 시작 기간을 설정해주세요"
+        />
+        <input
+          type="text"
+          value={`${formatDate(endDate)}`}
+          onClick={handleInputClick}
+          readOnly
+          placeholder="투표 마감 기간을 설정해주세요"
         />
       </S.InputWrapper>
 

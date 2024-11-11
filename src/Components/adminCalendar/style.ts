@@ -2,19 +2,19 @@ import styled from "styled-components";
 import { Color } from "../../Styles/Color";
 
 export const Container = styled.div`
-  width: 384px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;
 `;
 
 export const InputWrapper = styled.div`
-  width: 100%;
-  max-width: 340px;
+  display: flex;
+  justify-content: space-between;
 
   input {
     font-family: "Pretendard";
-    width: 100%;
+    width: 340px;
     height: 59px;
     padding-left: 24px;
     font-size: 16px;
@@ -32,12 +32,12 @@ export const InputWrapper = styled.div`
 
 export const CalendarWrap = styled.div`
   position: absolute;
-  top: 38vh;
+  top: 40vh;
   width: 100%;
-  max-width: 340px;
+  max-width: 380px;
   padding: 20px;
   background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid ${Color.gray50};
   border-radius: 8px;
   z-index: 10;
 `;
