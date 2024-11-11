@@ -6,7 +6,9 @@ const Layout = () => {
   return (
     <Container>
       <SideBar />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
     </Container>
   )
 }
@@ -16,6 +18,10 @@ export default Layout
 const Container = styled.div`
 width: 100%;
 height: 100vh;
-display: flex;
-flex-direction: row;
 `
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  padding-left: 20vw;
+  overflow-y: auto;
+`;
