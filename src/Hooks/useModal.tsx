@@ -1,6 +1,11 @@
 import { ReactNode, useCallback, useState } from 'react';
 import Modal from '../Components/modal';
 
+interface ModalWrapperProps {
+  onClose?: () => void,
+  children: ReactNode;
+}
+
 const useModal = ({ useBlur = true } = {}) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,12 +17,12 @@ const useModal = ({ useBlur = true } = {}) => {
     setIsOpen(false);
   }, []);
 
+  const ModalWrapper = ({ children }: ModalWrapperProps) => (
+    <Modal onClose={useBlur ? close : undefined}>{children}</Modal>
+  );
+
   return {
-    Modal: isOpen
-      ? ({ children }: { children: ReactNode }) => (
-          <Modal onClose={useBlur ? close : undefined}>{children}</Modal>
-        )
-      : () => null,
+    Modal: isOpen ? ModalWrapper : () => undefined,
     open,
     close,
     isOpen,

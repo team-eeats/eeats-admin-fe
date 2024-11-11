@@ -9,7 +9,7 @@ const ModifyDeleteModal = ({ id, close }: { id: string; close: () => void }) => 
   const navigate = useNavigate();
   const [deleteSuggest, setDeleteSuggest] = useState<boolean>(false);
 
-  const { Modal: CustomModal, open, close: modalClose, isOpen } = useModal({ useBlur: true });
+  const { Modal, close: modalClose, isOpen } = useModal({ useBlur: true });
 
   const handleModify = () => {
     navigate("/modifyNotice", { state: { noticeId: id } });
@@ -38,9 +38,9 @@ const ModifyDeleteModal = ({ id, close }: { id: string; close: () => void }) => 
       )}
 
       {isOpen && (
-        <CustomModal>
+        <Modal onClose={modalClose}>
           <DeleteModal id={id} close={modalClose} />
-        </CustomModal>
+        </Modal>
       )}
     </>
   );

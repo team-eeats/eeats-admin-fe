@@ -55,9 +55,9 @@ const Notice = ({ value }: { value: Notices }) => {
           </S.Content>
         )}
       </S.Container>
-      
+
       {isOpen && (
-        <Modal>
+        <Modal onClose={close}>
           <ModifyDeleteModal id={id} close={close} />
         </Modal>
       )}
