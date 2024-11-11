@@ -34,8 +34,8 @@ export const DeleteNotice = async (noticeId: string) => {
   return await instance.delete(`${router}/${noticeId}`);
 };
 
-export const NoticeDetail = async (noticeId: number) => {
-  return await instance.get<NoticeDetailResponse>(`${router}/${noticeId}`);
+export const NoticeDetail = async (noticeId: string) => {
+  return await instance.get<NoticeDetailResponse>(`${router}/details/${noticeId}`);
 };
 
 export const NoticeList = async () => {
