@@ -6,6 +6,7 @@ interface ListProp {
 }
 
 export const Container = styled.div`
+position: fixed;
 width: 20vw;
 height: 100vh;
 background-color: ${Color.main0};
