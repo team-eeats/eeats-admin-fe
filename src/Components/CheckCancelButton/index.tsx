@@ -15,7 +15,7 @@ const CheckCancelButton = ({ id, close }: ButtonProps) => {
       close();
       location.reload();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
