@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import * as S from './style';
-import { Font } from '../../Styles/Font';
+import * as S from "./style";
+import { Font } from "../../Styles/Font";
 import { ArrowRight } from "../../assets/img/SVG/ArrowRight";
 import { ArrowLeft } from "../../assets/img/SVG/ArrowLeft";
 
@@ -10,7 +10,6 @@ const AdminCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [calendarPosition, setCalendarPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
 
   const inputRef = useRef<HTMLDivElement | null>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
@@ -47,14 +46,24 @@ const AdminCalendar = () => {
     return weeks;
   };
 
-  const handleMonthChange = (direction: 'prev' | 'next') => {
-    setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth() + (direction === 'prev' ? -1 : 1), 1));
+  const handleMonthChange = (direction: "prev" | "next") => {
+    setCurrentDate(
+      (prevDate) =>
+        new Date(
+          prevDate.getFullYear(),
+          prevDate.getMonth() + (direction === "prev" ? -1 : 1),
+          1
+        )
+    );
   };
 
-  const isToday = (date: Date) => new Date().toDateString() === date.toDateString();
+  const isToday = (date: Date) =>
+    new Date().toDateString() === date.toDateString();
   const isPastDate = (date: Date) => date < new Date();
-  const isCurrentMonth = (date: Date) => date.getMonth() === currentDate.getMonth();
-  const isSelectedDate = (date: Date) => selectedDate?.toDateString() === date.toDateString();
+  const isCurrentMonth = (date: Date) =>
+    date.getMonth() === currentDate.getMonth();
+  const isSelectedDate = (date: Date) =>
+    selectedDate?.toDateString() === date.toDateString();
 
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
@@ -62,13 +71,6 @@ const AdminCalendar = () => {
   };
 
   const handleInputClick = () => {
-    if (inputRef.current) {
-      const { bottom, left } = inputRef.current.getBoundingClientRect();
-      setCalendarPosition({
-        top: bottom + 10,  // 원하는 만큼 여백 추가
-        left: left + 5,    // 원하는 만큼 여백 추가
-      });
-    }
     setIsCalendarOpen(!isCalendarOpen);
   };
 
@@ -94,32 +96,34 @@ const AdminCalendar = () => {
   const { startDay, endDay } = getStartAndEndDays();
   const weeks = groupDatesByWeek(startDay, endDay);
 
-  const formatDate = (date: Date | null) => date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : "";
+  // 날짜를 "MM월 DD일" 형식으로 포맷
+  const formatDate = (date: Date | null) =>
+    date ? `${date.getMonth() + 1}월 ${date.getDate()}일` : "";
 
   return (
     <S.Container>
       <S.InputWrapper ref={inputRef}>
-        <input 
-          type="text" 
-          value={formatDate(selectedDate)} 
-          onClick={handleInputClick} 
-          readOnly 
-          placeholder="투표 시작 기간을 설정해주세요" 
+        <input
+          type="text"
+          value={formatDate(selectedDate)}
+          onClick={handleInputClick}
+          readOnly
+          placeholder="투표 시작 기간을 설정해주세요"
         />
       </S.InputWrapper>
-      
+
       {isCalendarOpen && (
-        <S.CalendarWrap ref={calendarRef} style={{ top: `${calendarPosition.top}px`, left: `${calendarPosition.left}px` }}>
+        <S.CalendarWrap ref={calendarRef}>
           <S.CalendarShiftWrap>
-            <div onClick={() => handleMonthChange('prev')}>
+            <div onClick={() => handleMonthChange("prev")}>
               <ArrowLeft />
             </div>
             <Font kind="Heading3" text={`${year}년 ${month + 1}월`} />
-            <div onClick={() => handleMonthChange('next')}>
+            <div onClick={() => handleMonthChange("next")}>
               <ArrowRight />
             </div>
           </S.CalendarShiftWrap>
-          
+
           <S.DayWrap>
             {daysOfWeek.map((day, index) => (
               <S.Day key={index}>
@@ -127,7 +131,7 @@ const AdminCalendar = () => {
               </S.Day>
             ))}
           </S.DayWrap>
-          
+
           <S.Month>
             {weeks.map((week, weekIndex) => (
               <S.Week key={weekIndex}>
